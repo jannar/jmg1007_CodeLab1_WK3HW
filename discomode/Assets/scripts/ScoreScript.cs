@@ -44,46 +44,46 @@ public class ScoreScript : MonoBehaviour {
 
 	// FOR HIGH SCORE SAVING
 	// where to save
-	public string fileName = "temp.txt";
-	public string filePath;
-
-	// the scores
-	[HideInInspector]
-	public List<int> highScoreValues;
-
-	// consts for saving to Player Prefs
-	private const string PREF_HIGH_SCORE = "highScorePref";
-
-	// Property for HighScore
-	private int highScore = 0;
-
-	public int HighScore{
-		get { 
-			highScore = PlayerPrefs.GetInt (PREF_HIGH_SCORE);
-			return highScore;
-		} set { 
-			highScore = value;
-			PlayerPrefs.SetInt (PREF_HIGH_SCORE, highScore);
-		}
-	}
-
-	// Property for wins
-	private int wins;
-
-	public int Wins{
-		get {
-			return wins;
-		}
-
-		set{
-			wins = value;
-
-			// if wins > HighScore, make HighScore = score
-			if (wins > HighScore){
-				HighScore = wins;
-			}
-		}
-	}
+//	public string fileName = "temp.txt";
+//	public string filePath;
+//
+//	// the scores
+//	[HideInInspector]
+//	public List<int> highScoreValues;
+//
+//	// consts for saving to Player Prefs
+//	private const string PREF_HIGH_SCORE = "highScorePref";
+//
+//	// Property for HighScore
+//	private int highScore = 0;
+//
+//	public int HighScore{
+//		get { 
+//			highScore = PlayerPrefs.GetInt (PREF_HIGH_SCORE);
+//			return highScore;
+//		} set { 
+//			highScore = value;
+//			PlayerPrefs.SetInt (PREF_HIGH_SCORE, highScore);
+//		}
+//	}
+//
+//	// Property for wins
+//	private int wins;
+//
+//	public int Wins{
+//		get {
+//			return wins;
+//		}
+//
+//		set{
+//			wins = value;
+//
+//			// if wins > HighScore, make HighScore = score
+//			if (wins > HighScore){
+//				HighScore = wins;
+//			}
+//		}
+//	}
 
 
 	// SINGLETON
@@ -103,7 +103,7 @@ public class ScoreScript : MonoBehaviour {
 		originalCameraPosition = new Vector3 (mainCamera.transform.position.x,
 			mainCamera.transform.position.y, -10);
 
-		filePath = Application.dataPath + "/" + fileName;
+		//filePath = Application.dataPath + "/" + fileName;
 
 		// get the squares
 		square = GameObject.Find("Square");
@@ -118,17 +118,17 @@ public class ScoreScript : MonoBehaviour {
 		p4Key = KeyCode.RightShift;
 
 		// streeeeeeeeamreader
-		StreamReader sr = new StreamReader(filePath);
-		string line = sr.ReadLine ();
-		sr.Close ();
-
-		// make it a singleton
-		if (instance == null) {
-			instance = this;
-			DontDestroyOnLoad (this);
-		} else {
-			Destroy (gameObject);
-		}
+//		StreamReader sr = new StreamReader(filePath);
+//		string line = sr.ReadLine ();
+//		sr.Close ();
+//
+//		// make it a singleton
+//		if (instance == null) {
+//			instance = this;
+//			DontDestroyOnLoad (this);
+//		} else {
+//			Destroy (gameObject);
+//		}
 	}
 
 	void Update () {
@@ -180,35 +180,35 @@ public class ScoreScript : MonoBehaviour {
 			allColorMatch = true;
 		}
 
-		if (ccs.timeRemaining <= 0) {
-			if (allColorMatch) {
+		if (allColorMatch) {
 				infoText.text = "faster!";
 				KillText ();
-				wins = wins + 1;
+				//wins = wins + 1;
 				win = true;
 				SceneManager.LoadScene (0);
 				ccs.duration = ccs.duration - 1.0f;
-			} else if (!allColorMatch) { // for losing
+			}
+
+		if (ccs.timeRemaining <=0 && !allColorMatch) { // for losing
 				// and here we record it before we move on
-				if (wins > highScore){
-					highScoreValues.Add(wins);
-
-					// ** streamwriter **
-					StreamWriter sw = new StreamWriter(filePath, true);
-
-					for (int i = 0; i < highScoreValues.Count; i++) {
-						sw.WriteLine (highScoreValues [i]);
-						Debug.Log (highScoreValues[i] + "recorded");
-					}
-
-					sw.Close ();
-				}
-				infoText.text = "you failed. r to reset.";
-				mainCamera.backgroundColor = Color.red;
-				if (Input.GetKeyDown (KeyCode.R)) {
-					SceneManager.LoadScene (0);
-					win = false;
-				}
+//				if (wins > highScore){
+//					highScoreValues.Add(wins);
+//
+//					// ** streamwriter **
+//					StreamWriter sw = new StreamWriter(filePath, true);
+//
+//					for (int i = 0; i < highScoreValues.Count; i++) {
+//						sw.WriteLine (highScoreValues [i]);
+//						Debug.Log (highScoreValues[i] + "recorded");
+//					}
+//
+//					sw.Close ();
+//				}
+			infoText.text = "you failed. r to reset.";
+			mainCamera.backgroundColor = Color.red;
+			if (Input.GetKeyDown (KeyCode.R)) {
+				SceneManager.LoadScene (0);
+				win = false;
 			}
 		}
 	}
